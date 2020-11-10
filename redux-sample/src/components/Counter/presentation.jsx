@@ -1,5 +1,14 @@
 import React from "react";
 
-const Counter = () => <div>counter</div>;
+const Counter = (props) =>{
+console.log(props)
+
+
+return(
+  <>
+<div>counter</div>;
+  </>
+)
+} 
 
 export default Counter;
