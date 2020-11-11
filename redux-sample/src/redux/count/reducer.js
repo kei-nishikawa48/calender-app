@@ -1,14 +1,14 @@
-import { INCREMENT, DECREMENT } from "constants"
+import { INCREMENT, DECREMENT } from "./constants";
 
-const initState=0;
+const initState = 0;
 
-export const count = (state=initState,{type,payload})=>{
-  switch (type){
+export const count = (state = initState, { type, payload }) => {
+  switch (type) {
     case INCREMENT:
-      return state+payload
-    case DECREMETN:
-      return state-payload
+      return state + payload;
+    case DECREMENT:
+      return state - payload;
     default:
       return state;
   }
-}
+};
