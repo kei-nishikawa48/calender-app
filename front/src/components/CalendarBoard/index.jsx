@@ -5,17 +5,21 @@ import {
 } from "@material-ui/core";
 import * as styles from "./style.css";
 import CalendarElement from "../CalendarElement/index"
+import { useDispatch, useSelector } from "react-redux"
 import {createCalendar} from "../../service/calendar"
-
-
+import addScheduleSlice from "../../redux/addSchedule/addScheduleSlice"
 const days = ["日", "月", "火", "水", "木", "金", "土"];
 
 
-const calendar = createCalendar();
 
 const CalendarBoard = () => {
-
-  console.log(calendar);
+  const dispatch = useDispatch()
+  
+  const month = useSelector(state => state.calendar)
+  const calendar=createCalendar(month)
+  const openAddScheduleDialog = () => {
+    dispatch(addScheduleSlice.actions.addScheduleOpenDialog())
+  }
 
   return (
     <div className={styles.container}>
@@ -35,8 +39,8 @@ const CalendarBoard = () => {
 
         ))}
         {calendar.map(c => (
-          <li key={c.toISOString()}>
-            <CalendarElement day={c} />
+          <li key={c.toISOString()} onClick={openAddScheduleDialog} >
+            <CalendarElement day={c} month={month} />
           </li>
         ))}
       </GridList>
