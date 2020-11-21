@@ -8,6 +8,7 @@ import CalendarElement from "../CalendarElement/index"
 import { useDispatch, useSelector } from "react-redux"
 import {createCalendar} from "../../service/calendar"
 import addScheduleSlice from "../../redux/addSchedule/addScheduleSlice"
+import { setSchedules } from "../../service/schedule";
 const days = ["日", "月", "火", "水", "木", "金", "土"];
 
 
@@ -16,9 +17,11 @@ const CalendarBoard = () => {
   const dispatch = useDispatch()
   
   const month = useSelector(state => state.calendar)
-  const calendar=createCalendar(month)
-  const openAddScheduleDialog = () => {
+  const schedules=useSelector(state=>state.schedule.items)
+  const calendar=setSchedules(createCalendar(month),schedules)
+  const openAddScheduleDialog = (d) => {
     dispatch(addScheduleSlice.actions.addScheduleOpenDialog())
+    dispatch(addScheduleSlice.actions.addScheduleSetValue({date:d}))
   }
 
   return (
@@ -38,9 +41,10 @@ const CalendarBoard = () => {
           </li>
 
         ))}
-        {calendar.map(c => (
-          <li key={c.toISOString()} onClick={openAddScheduleDialog} >
-            <CalendarElement day={c} month={month} />
+        {calendar.map(({date,schedules}) => 
+          (
+          <li key={date.toISOString()} onClick={()=>openAddScheduleDialog(date)} >
+            <CalendarElement day={date} month={month} schedules={schedules}/>
           </li>
         ))}
       </GridList>
