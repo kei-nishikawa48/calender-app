@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import { isSameMonth, isFirstDay, isSameDay ,getMonth} from "../../service/calendar"
 import Schedule from "../Schedule/index"
 
-const CalendarElement = ({ day ,month,schedules}) => {
+const CalendarElement = ({ day, month, schedules, onClickSchedule}) => {
   const currentMonth = getMonth(month);
   const format = isFirstDay(day) ? "M月D日" : "D";
   const today = dayjs();
@@ -27,7 +27,7 @@ const CalendarElement = ({ day ,month,schedules}) => {
       </Typography>
       <div className={styles.schedules}>
         {schedules.map(e => (
-          <Schedule key={e.id} schedule={e} />
+          <Schedule key={e.id} schedule={e} onClickSchedule={onClickSchedule} />
         ))}
       </div>
     </div>

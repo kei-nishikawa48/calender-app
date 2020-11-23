@@ -15,7 +15,7 @@ import { useSelector, useDispatch } from "react-redux"
 import addScheduleSlice from "../../redux/addSchedule/addScheduleSlice"
 import { DatePicker } from "@material-ui/pickers";
 import * as styles from "./style.css";
-import scheduleSlice, { schedulesAddItem } from "../../redux/schedules/scheduleSlice";
+import scheduleSlice from "../../redux/schedules/scheduleSlice";
 const spacer = { margin: "4px 0" };
 
 const Title = withStyles({
@@ -25,7 +25,7 @@ const Title = withStyles({
 
 const AddScheduleDialog = () => {
   const schedule = useSelector(state => state.addSchedule)
-  const schedules=useSelector(state=>state.schedule)
+
   const dispatch = useDispatch()
   const isDialogOpen = useSelector(state => state.addSchedule.isDialogOpen)
   const closeDialog = () => {

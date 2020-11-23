@@ -9,6 +9,7 @@ import Navigation from "./components/Navigation/presentation"
 import DayjsUtils from "@date-io/dayjs";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import AddScheduleDialog from "./components/AddScheduleDialog/presentation"
+import CurrentScheduleDialog from "./components/CurrentScheduleDialog/presentation"
 dayjs.locale("ja");
 
 
@@ -18,6 +19,7 @@ const App = () =>(
     <Navigation />
     <CalendarBoard />
     <AddScheduleDialog />
+      <CurrentScheduleDialog />
     </MuiPickersUtilsProvider>
   </Provider>
 )

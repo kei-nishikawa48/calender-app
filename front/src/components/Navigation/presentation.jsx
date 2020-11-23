@@ -1,4 +1,4 @@
-import React,{useState} from "react"
+import React from "react"
 import { IconButton, Toolbar, Typography, withStyles } from "@material-ui/core";
 import ArrowBackIos from "@material-ui/icons/ArrowBackIos";
 import ArrowForwardIos from "@material-ui/icons/ArrowForwardIos";
@@ -7,6 +7,7 @@ import {useDispatch,useSelector} from "react-redux"
 import calendarSlice from "../../redux/calendar/calendarSlice";
 import { formatMonth, getMonth, getNextMonth, getPreviousMonth} from "../../service/calendar";
 import { DatePicker } from "@material-ui/pickers";
+import { asyncSchedulesFetchItem } from "../../redux/schedules/effects"
 const StyledToolbar = withStyles({
   root: { padding: "0" }
 })(Toolbar);
@@ -23,17 +24,23 @@ const Navigation = () => {
   const calendar=useSelector(state=>state.calendar)
   const month =getMonth(calendar)
   const dispatch =useDispatch()
+  const fetchItem=(month)=>{
+    dispatch(asyncSchedulesFetchItem(month))
+  }
   const setMonth=(dayObj)=>{
     const month = formatMonth(dayObj)
     dispatch(calendarSlice.actions.calendarSetMonth(month))
+    dispatch(fetchItem(month))
   }
   const setNextMonth=()=>{
     const nextMonth=getNextMonth(calendar)
     setMonth(nextMonth)
+    fetchItem(nextMonth)
   }
   const setPreviousMonth=()=>{
     const previousMonth=getPreviousMonth(calendar)
     setMonth(previousMonth)
+    fetchItem(previousMonth)
   }
   return (
     <StyledToolbar>

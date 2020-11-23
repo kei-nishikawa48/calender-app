@@ -9,8 +9,8 @@ const currentScheduleSlice=createSlice({
   initialState:init,
   reducers:{
     currentScheduleSetItem:(state,action)=>({...state, item:action.payload}),
-    currentScheduleOpenDialog:()=>({...state,isDialogOpen:true}),
-    currentScheduleCloseDialog:()=>({...state,isDialogOpen:false})
+    currentScheduleOpenDialog:(state)=>({...state,isDialogOpen:true}),
+    currentScheduleCloseDialog:(state)=>({...state,isDialogOpen:false})
   }
 })
 
