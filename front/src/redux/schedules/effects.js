@@ -1,14 +1,26 @@
-import {schedulesFetchItem,schedulesSetLoading} from "./scheduleSlice";
-import { get } from "../../service/api";
+import { schedulesSetLoading, schedulesFetchItem, schedulesAddItem} from "./scheduleSlice";
+import { get, post  } from "../../service/api";
 import { formatSchedule } from "../../service/schedule";
+
 
 
 export const asyncSchedulesFetchItem = ({ month, year }) => async dispatch => {
   dispatch(schedulesSetLoading());
 
   const result = await get(`schedules?month=${month}&year=${year}`);
-  console.log(result)
+
   const formatedSchedule = result.map(r => formatSchedule(r));
 
   dispatch(schedulesFetchItem(formatedSchedule));
+};
+
+export const asyncSchedulesAddItem = schedule => async dispatch => {
+  // loading: true にする
+  dispatch(schedulesSetLoading());
+
+  const body = { ...schedule, date: schedule.date.toISOString() };
+  const result = await post("schedules", body);
+
+  const newSchedule = formatSchedule(result);
+  dispatch(schedulesAddItem(newSchedule));
 };

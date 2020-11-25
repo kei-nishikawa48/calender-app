@@ -1,10 +1,9 @@
 import {createSlice} from "@reduxjs/toolkit"
-import dayjs from "dayjs";
 const init = {
   form: {
     title: "",
     description: "",
-    date: dayjs(),
+    date: "",
     location: ""
   },
   isDialogOpen: false

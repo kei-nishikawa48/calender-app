@@ -11,9 +11,7 @@ import addScheduleSlice from "../../redux/addSchedule/addScheduleSlice"
 import { setSchedules } from "../../service/schedule";
 import currentScheduleSlice from "../../redux/currentSchedule/currentScheduleSlice";
 import { asyncSchedulesFetchItem } from "../../redux/schedules/effects"
-
 const days = ["日", "月", "火", "水", "木", "金", "土"];
-
 
 
 const CalendarBoard = () => {
@@ -22,9 +20,6 @@ const CalendarBoard = () => {
   const month = useSelector(state => state.calendar)
   const schedules = useSelector(state => state.schedule.items)
   const calendar = setSchedules(createCalendar(month), schedules)
-  const fetchSchedule = () => {
-    dispatch(asyncSchedulesFetchItem(month))
-  }
 
   const openCurrentScheduleDialog = (schedule, e) => {
     e.stopPropagation();
@@ -35,11 +30,14 @@ const CalendarBoard = () => {
     dispatch(addScheduleSlice.actions.addScheduleOpenDialog())
     dispatch(addScheduleSlice.actions.addScheduleSetValue({ date: d }))
   }
+  const fetchSchedule= month => {
+  dispatch(asyncSchedulesFetchItem(month));
+}
 
-  // useEffect(() => {
-  //   debugger;
-  //   fetchSchedule();
-  // }, []);
+  
+  useEffect(() => {
+    fetchSchedule(month)
+  }, []);
 
 
 

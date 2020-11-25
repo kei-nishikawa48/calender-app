@@ -6,8 +6,8 @@ import DehazeIcon from "@material-ui/icons/Dehaze";
 import {useDispatch,useSelector} from "react-redux"
 import calendarSlice from "../../redux/calendar/calendarSlice";
 import { formatMonth, getMonth, getNextMonth, getPreviousMonth} from "../../service/calendar";
+import {asyncSchedulesFetchItem} from "../../redux/schedules/effects"
 import { DatePicker } from "@material-ui/pickers";
-import { asyncSchedulesFetchItem } from "../../redux/schedules/effects"
 const StyledToolbar = withStyles({
   root: { padding: "0" }
 })(Toolbar);
@@ -24,23 +24,23 @@ const Navigation = () => {
   const calendar=useSelector(state=>state.calendar)
   const month =getMonth(calendar)
   const dispatch =useDispatch()
-  const fetchItem=(month)=>{
-    dispatch(asyncSchedulesFetchItem(month))
+  const fetchSchedule = month => {
+    dispatch(asyncSchedulesFetchItem(month));
   }
   const setMonth=(dayObj)=>{
     const month = formatMonth(dayObj)
     dispatch(calendarSlice.actions.calendarSetMonth(month))
-    dispatch(fetchItem(month))
+    fetchSchedule(month)
   }
   const setNextMonth=()=>{
     const nextMonth=getNextMonth(calendar)
     setMonth(nextMonth)
-    fetchItem(nextMonth)
+    fetchSchedule(nextMonth)
   }
   const setPreviousMonth=()=>{
     const previousMonth=getPreviousMonth(calendar)
     setMonth(previousMonth)
-    fetchItem(previousMonth)
+    fetchSchedule(previousMonth)
   }
   return (
     <StyledToolbar>

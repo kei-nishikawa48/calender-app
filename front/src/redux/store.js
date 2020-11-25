@@ -1,8 +1,10 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit"
+import { combineReducers, configureStore, getDefaultMiddleware } from "@reduxjs/toolkit"
 import calendarSlice from "./calendar/calendarSlice"
 import addScheduleSlice from "./addSchedule/addScheduleSlice"
 import scheduleSlice from "./schedules/scheduleSlice"
 import currentScheduleSlice from "./currentSchedule/currentScheduleSlice"
+
+const middleware = getDefaultMiddleware({ serializableCheck: false });
 
 const Reducer = combineReducers({
   calendar: calendarSlice.reducer,
@@ -12,6 +14,7 @@ const Reducer = combineReducers({
 })
 
 const store = configureStore({
-  reducer:Reducer
+  reducer:Reducer,
+  middleware
 })
 export default store
