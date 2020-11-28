@@ -7,9 +7,14 @@ import {
   Grid,
   Typography
 } from "@material-ui/core";
-import { Close, LocationOnOutlined, NotesOutlined } from "@material-ui/icons";
+import {
+  Close, LocationOnOutlined, 
+  NotesOutlined,
+  DeleteOutlineOutlined
+} from "@material-ui/icons";
 import currentScheduleSlice from "../../redux/currentSchedule/currentScheduleSlice"
-import {useSelector,useDispatch} from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
+import { asyncSchedulesDeleteItem } from "../../redux/schedules/effects";
 
 import styles from "./style.css";
 
@@ -19,16 +24,26 @@ const spacer = (top, bottom) => ({
 
 const CurrentScheduleDialog = () => {
   const schedule = useSelector(state => state.currentSchedule)
-  const item=schedule.item
-  const isDialogOpen=schedule.isDialogOpen
-  const dispatch =useDispatch()
-  const closeDialog=()=>{
+  const schedules = useSelector(state => state.schedule)
+  const item = schedule.item
+  const isDialogOpen = schedule.isDialogOpen
+  const dispatch = useDispatch()
+  const closeDialog = () => {
+    dispatch(currentScheduleSlice.actions.currentScheduleCloseDialog())
+  }
+
+  const deleteItem = () => {
+    const id  = item.id
+    dispatch(asyncSchedulesDeleteItem(id,schedules))
     dispatch(currentScheduleSlice.actions.currentScheduleCloseDialog())
   }
   return (
     <Dialog open={isDialogOpen} onClose={closeDialog} maxWidth="xs" fullWidth>
       <DialogActions>
         <div className={styles.closeButton}>
+          <IconButton onClick={deleteItem} size="small">
+            <DeleteOutlineOutlined />
+          </IconButton>
           <IconButton onClick={closeDialog} size="small">
             <Close />
           </IconButton>

@@ -1,5 +1,5 @@
-import { schedulesSetLoading, schedulesFetchItem, schedulesAddItem} from "./scheduleSlice";
-import { get, post  } from "../../service/api";
+import { schedulesSetLoading, schedulesFetchItem, schedulesAddItem, schedulesDeleteItem} from "./scheduleSlice";
+import { get, post, deleteRequest } from "../../service/api";
 import { formatSchedule } from "../../service/schedule";
 
 
@@ -23,4 +23,15 @@ export const asyncSchedulesAddItem = schedule => async dispatch => {
 
   const newSchedule = formatSchedule(result);
   dispatch(schedulesAddItem(newSchedule));
+};
+
+export const asyncSchedulesDeleteItem = (id,nowState) => async (dispatch) => {
+  dispatch(schedulesSetLoading());
+
+  const currentSchedules = nowState.items;
+  await deleteRequest(`schedules/${id}`);
+
+  // 成功したらローカルのstateを削除
+  const newSchedules = currentSchedules.filter(s => s.id !== id);
+  dispatch(schedulesDeleteItem(newSchedules));
 };
