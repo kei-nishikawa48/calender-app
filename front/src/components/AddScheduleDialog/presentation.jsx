@@ -7,7 +7,9 @@ import {
   Button,
   Input,
   Grid,
-  IconButton
+  IconButton,
+  Typography,
+  Tooltip,
 } from "@material-ui/core";
 import { LocationOnOutlined, NotesOutlined, AccessTime, Close } from "@material-ui/icons";
 import { withStyles } from "@material-ui/styles";
@@ -15,12 +17,12 @@ import { useSelector, useDispatch } from "react-redux"
 import addScheduleSlice from "../../redux/addSchedule/addScheduleSlice"
 import { DatePicker } from "@material-ui/pickers";
 import * as styles from "./style.css";
-import scheduleSlice from "../../redux/schedules/scheduleSlice";
 import { asyncSchedulesAddItem } from "../../redux/schedules/effects"
+
 const spacer = { margin: "4px 0" };
 
 const Title = withStyles({
-  root: { marginBottom: 32, fontSize: 22 }
+  root: { fontSize: 22 }
 })(Input);
 
 
@@ -28,6 +30,7 @@ const AddScheduleDialog = () => {
   const schedule = useSelector(state => state.addSchedule)
   const dispatch = useDispatch()
   const isDialogOpen = useSelector(state => state.addSchedule.isDialogOpen)
+  const isStartEdit =useSelector(state=>state.addSchedule.isStartEdit)
   const closeDialog = () => {
     dispatch(addScheduleSlice.actions.addScheduleCloseDialog())
   }
@@ -39,21 +42,35 @@ const AddScheduleDialog = () => {
     dispatch(asyncSchedulesAddItem(addschedule));
     dispatch(addScheduleSlice.actions.addScheduleCloseDialog())
   }
-  
+  const setIsEditStart=()=>{
+    dispatch(addScheduleSlice.actions.addScheduleStartEdit())
+  }
+  const isTitleInvalid = !schedule.form.title && isStartEdit;
   return (
     <Dialog open={isDialogOpen} onClose={closeDialog} maxWidth="xs" fullWidth>
       <DialogActions>
         <div className={styles.closeButton}>
-          <IconButton onClick={closeDialog} size="small">
-            <Close />
-          </IconButton>
+          <Tooltip title="閉じる" placement="bottom">
+            <IconButton onClick={closeDialog} size="small">
+              <Close />
+            </IconButton>
+          </Tooltip>
         </div>
       </DialogActions>
       <DialogContent>
         <Title autoFocus fullWidth placeholder="タイトルと日時を追加"
           value={schedule.form.title}
           onChange={e => setSchedule({ title: e.target.value })}
+          onBlur={setIsEditStart}
+          error={isTitleInvalid}
         />
+        <div className={styles.validation}>
+          {isTitleInvalid && (
+            <Typography variant="caption" component="div" color="error">
+              タイトルは必須です。
+            </Typography>
+          )}
+        </div>
         <Grid container spacing={1} alignItems="center" justify="space-between">
           <Grid item>
             <AccessTime />
@@ -95,7 +112,7 @@ const AddScheduleDialog = () => {
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button color="primary" variant="outlined" onClick={saveSchedule}>
+        <Button color="primary" variant="outlined" onClick={saveSchedule} disabled={!schedule.form.title}>
           保存
         </Button>
       </DialogActions>

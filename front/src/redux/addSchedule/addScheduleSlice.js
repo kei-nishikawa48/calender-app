@@ -6,7 +6,8 @@ const init = {
     date: "",
     location: ""
   },
-  isDialogOpen: false
+  isDialogOpen: false,
+  isStartEdit:false
 };
 
 const addScheduleSlice=createSlice({
@@ -15,7 +16,8 @@ const addScheduleSlice=createSlice({
   reducers:{
     addScheduleSetValue:(state,action)=>( {...state,form:{...state.form, ...action.payload}}),
     addScheduleOpenDialog:(state)=>({...state,isDialogOpen:true}),
-    addScheduleCloseDialog:()=>init
+    addScheduleCloseDialog:()=>init,
+    addScheduleStartEdit:(state)=>({...state,isStartEdit:true})
   }
 })
 

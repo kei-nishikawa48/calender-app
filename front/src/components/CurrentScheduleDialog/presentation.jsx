@@ -5,10 +5,12 @@ import {
   IconButton,
   DialogActions,
   Grid,
-  Typography
+  Typography,
+  Tooltip,
 } from "@material-ui/core";
 import {
-  Close, LocationOnOutlined, 
+  Close,
+  LocationOnOutlined,
   NotesOutlined,
   DeleteOutlineOutlined
 } from "@material-ui/icons";
@@ -33,20 +35,24 @@ const CurrentScheduleDialog = () => {
   }
 
   const deleteItem = () => {
-    const id  = item.id
-    dispatch(asyncSchedulesDeleteItem(id,schedules))
+    const id = item.id
+    dispatch(asyncSchedulesDeleteItem(id, schedules))
     dispatch(currentScheduleSlice.actions.currentScheduleCloseDialog())
   }
   return (
     <Dialog open={isDialogOpen} onClose={closeDialog} maxWidth="xs" fullWidth>
       <DialogActions>
         <div className={styles.closeButton}>
-          <IconButton onClick={deleteItem} size="small">
-            <DeleteOutlineOutlined />
-          </IconButton>
-          <IconButton onClick={closeDialog} size="small">
-            <Close />
-          </IconButton>
+          <Tooltip title="削除" placement="bottom">
+            <IconButton onClick={deleteItem} size="small">
+              <DeleteOutlineOutlined />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="閉じる" placement="bottom">
+            <IconButton onClick={closeDialog} size="small">
+              <Close />
+            </IconButton>
+          </Tooltip>
         </div>
       </DialogActions>
 

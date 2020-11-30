@@ -30,7 +30,7 @@ const CalendarBoard = () => {
     dispatch(addScheduleSlice.actions.addScheduleOpenDialog())
     dispatch(addScheduleSlice.actions.addScheduleSetValue({ date: d }))
   }
-  const fetchSchedule= month => {
+  const fetchSchedule = month => {
   dispatch(asyncSchedulesFetchItem(month));
 }
 
