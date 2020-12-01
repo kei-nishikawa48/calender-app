@@ -18,6 +18,7 @@ import addScheduleSlice from "../../redux/addSchedule/addScheduleSlice"
 import { DatePicker } from "@material-ui/pickers";
 import * as styles from "./style.css";
 import { asyncSchedulesAddItem } from "../../redux/schedules/effects"
+import { isCloseDialog } from "../../service/schedule"
 
 const spacer = { margin: "4px 0" };
 
@@ -32,7 +33,9 @@ const AddScheduleDialog = () => {
   const isDialogOpen = useSelector(state => state.addSchedule.isDialogOpen)
   const isStartEdit =useSelector(state=>state.addSchedule.isStartEdit)
   const closeDialog = () => {
-    dispatch(addScheduleSlice.actions.addScheduleCloseDialog())
+    if(isCloseDialog(schedule.form)){
+      dispatch(addScheduleSlice.actions.addScheduleCloseDialog())
+    }
   }
   const setSchedule = (value) => {
     dispatch(addScheduleSlice.actions.addScheduleSetValue(value))
@@ -46,6 +49,8 @@ const AddScheduleDialog = () => {
     dispatch(addScheduleSlice.actions.addScheduleStartEdit())
   }
   const isTitleInvalid = !schedule.form.title && isStartEdit;
+
+  
   return (
     <Dialog open={isDialogOpen} onClose={closeDialog} maxWidth="xs" fullWidth>
       <DialogActions>
